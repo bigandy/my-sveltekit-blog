@@ -5,7 +5,8 @@ const fetchPosts = async ({ offset = 0, limit = postsPerPage, category = '' } = 
 		Object.entries(import.meta.glob('/src/lib/posts/**/*.md')).map(async ([path, resolver]) => {
 			const { metadata } = await resolver();
 
-			const slug = path.replace('/src/lib/posts/', '');
+			const slug = path.replace('/src/lib/posts/', '').replace('.md', '');
+			console.log({ slug });
 			return { ...metadata, slug };
 		})
 	);
