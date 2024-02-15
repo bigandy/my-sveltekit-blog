@@ -1,16 +1,22 @@
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ params, url }) => {
-	console.log({ params, url, containsSlash: params.post.includes('/') });
+	// chop up the url into array of sections
+	const sections = url.pathname.split('/').filter(Boolean);
+
+	console.log({ sections });
+
 	try {
 		let post;
-		if (url.pathname.includes('/blog/weeknotes')) {
-			// one level deeper
+
+		if (sections.length === 4) {
 			post = await import(
-				`../../../lib/posts/weeknotes/${url.pathname.replace('/blog/weeknotes/', '')}.md`
+				`../../../lib/posts/${sections.at(-3)}/${sections.at(-2)}/${sections.at(-1)}.md`
 			);
+		} else if (sections.length === 3) {
+			post = await import(`../../../lib/posts/${sections.at(-2)}/${sections.at(-1)}.md`);
 		} else {
-			post = await import(`../../../lib/posts/${params.post}.md`);
+			post = await import(`../../../lib/posts/${sections.at(-1)}.md`);
 		}
 
 		return {

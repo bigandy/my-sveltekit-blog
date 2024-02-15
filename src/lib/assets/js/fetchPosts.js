@@ -6,7 +6,6 @@ const fetchPosts = async ({ offset = 0, limit = postsPerPage, category = '' } = 
 			const { metadata } = await resolver();
 
 			const slug = path.replace('/src/lib/posts/', '').replace('.md', '');
-			console.log({ slug });
 			return { ...metadata, slug };
 		})
 	);
